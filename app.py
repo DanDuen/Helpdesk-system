@@ -20,7 +20,7 @@ def home():
 
     # whatever this function returns becomes the response sent to the browser
 
-    return "successful"
+    return "Connection successful"
 
 # this block only runs if you execute this file directly (not imported elsewhere)
 
