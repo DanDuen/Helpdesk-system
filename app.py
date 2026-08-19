@@ -22,6 +22,13 @@ def home():
 
     return "Connection successful"
 
+
+@app.route("/hello")
+
+def hello():
+
+    return "Hello, World!"
+
 # this block only runs if you execute this file directly (not imported elsewhere)
 
 if __name__ == "__main__":
