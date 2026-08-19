@@ -22,6 +22,13 @@ def home():
 
     return "unsuccessful"
 
+
+@app.route("/about")
+
+def about():
+
+    return "About Chromelord"
+
 # this block only runs if you execute this file directly (not imported elsewhere)
 
 if __name__ == "__main__":
