@@ -1,6 +1,6 @@
 # import the Flask class from the flask package
 
-from flask import Flask
+from flask import Flask, render_template
 
 # create an instance of the Flask application
 
@@ -17,11 +17,15 @@ app = Flask(__name__)
 @app.route("/")
 
 def home():
+    return render_template("home.html")
 
     # whatever this function returns becomes the response sent to the browser
 
     return "Connection successful"
 
+@app.route("/about")
+def about():
+    return "This is the IT helpdesk system."
 
 @app.route("/hello")
 
