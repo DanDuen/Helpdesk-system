@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>New Ticket</title>
+    </head>
+
+    <body>
+        <h1>New Ticket</h1>
+
+         <!-- action="/new" means: send this form's data back to the /new route -->
+        <!-- method="POST" means: this is a "submit data" request, not just "view a page" -->
+        <form action="/new" method="POST">
+
+            <label>Requester:</label>
+            <!-- name="requester" is the key Flask will use to read this field's value -->
+            <input type="text" name="requester">
+            <br>
+
+            <label>Description:</label>
+            <input type="text" name="description">
+            <br>
+
+            <label>Assigned to:</label>
+            <input type="text" name="assigned_to">
+            <br>
+
+            <label>Priority:</label>
+            <select name="priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <br>
+
+            <label>Asset ID:</label>
+            <input type="text" name="asset_id">
+            <br>
+
+            <input type="submit" value="Create Ticket">
+        </form>
+    </body>
+</html>
