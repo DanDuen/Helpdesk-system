@@ -1,6 +1,7 @@
 # import the Flask class from the flask package
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect 
+from datetime import datetime
 import sqlite3
 # create an instance of the Flask application
 
@@ -38,14 +39,25 @@ def new_ticket():
         assigned_to = request.form["assigned_to"]
         priority = request.form["priority"]
         asset_id = request.form["asset_id"]
+        resolution_notes = request.form["resolution_notes"]
+        created_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        already_resolved = request.form.get("already_resolved") == "yes"
+        resolved_at = request.form.get("resolved_at") if already_resolved else None
+
+        if already_resolved:
+            status = "Fixed"
+            resolved_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        else:
+            status = "Open"
+            resolved_at = None
 
         conn = sqlite3.connect("helpdesk.db")
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO tickets (assigned_to, requester, description, priority, status)
-            VALUES (?, ?, ?, ?, ?)
-        """, (assigned_to, requester, description, priority, "Open"))
+            INSERT INTO tickets (assigned_to, requester, description, priority, resolution_notes, status, created_at, asset_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (assigned_to, requester, description, priority, resolution_notes, status, created_at, asset_id))
 
         conn.commit()
         conn.close()
