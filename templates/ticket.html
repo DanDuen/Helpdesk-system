@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ticket Details</title>
+    </head>
+
+    <body>
+        <h1>Ticket #{{ ticket[0] }}</h1>
+
+        <p><strong>Assigned To:</strong> {{ ticket[1] }}</p>
+        <p><strong>Requester:</strong> {{ ticket[2] }}</p>
+        <p><strong>Description:</strong> {{ ticket[3] }}</p>
+        <p><strong>Priority:</strong> {{ ticket[4] }}</p>
+        <p><strong>Status:</strong> {{ ticket[5] }}</p>
+        <p><strong>Asset ID:</strong> {{ ticket[6] }}</p>
+        <p><strong>Created at:</strong> {{ ticket[7] }}</p>
+        <p><strong>Resolved at:</strong> {{ ticket[8] }}</p>
+        <p><strong>Resolution Notes:</strong> {{ ticket[9] }}</p>
+        <p><a href="/tickets">Back to Tickets List</a></p>
+    </body>
+</html>

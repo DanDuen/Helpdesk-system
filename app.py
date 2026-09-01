@@ -1,6 +1,8 @@
 # import the Flask class from the flask package
 # This is a comment!
 
+#TODO: Make a way to delete tickets and to edit tickets
+
 from flask import Flask, render_template, request, redirect 
 from datetime import datetime
 import sqlite3
@@ -28,7 +30,7 @@ def list_tickets():
     cursor.execute("SELECT * FROM tickets")    # get every row from the tickets table
     all_tickets = cursor.fetchall()            # pull the actual rows into a Python list
     db.close()                               # close the connection now that we're done
-    print(all_tickets)                         # temporary: just print to terminal to verify
+    #print(all_tickets)                         # temporary: just print to terminal to verify
     return render_template("tickets.html", tickets=all_tickets)           # temporary placeholder response
 
 @app.route("/new", methods=["GET", "POST"])
@@ -42,8 +44,8 @@ def new_ticket():
         asset_id = request.form["asset_id"]
         resolution_notes = request.form["resolution_notes"]
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+            #TODO: check if already resolved works
         already_resolved = request.form.get("already_resolved") == "yes"
-        resolved_at = request.form.get("resolved_at") if already_resolved else None
 
         if already_resolved:
             status = "Fixed"
@@ -56,9 +58,9 @@ def new_ticket():
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO tickets (assigned_to, requester, description, priority, resolution_notes, status, created_at, asset_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (assigned_to, requester, description, priority, resolution_notes, status, created_at, asset_id))
+            INSERT INTO tickets (assigned_to, requester, description, priority, resolution_notes, status, created_at, asset_id, resolved_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (assigned_to, requester, description, priority, resolution_notes, status, created_at, asset_id, resolved_at))
 
         conn.commit()
         conn.close()
@@ -69,7 +71,14 @@ def new_ticket():
         # show the blank form
         return render_template("new_ticket.html")
 
-
+@app.route("/ticket/<int:ticket_id>")
+def view_ticket(ticket_id):
+    db = sqlite3.connect("helpdesk.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM tickets WHERE id = ?", (ticket_id,))
+    ticket = cursor.fetchone()
+    db.close()
+    return render_template("ticket.html", ticket=ticket)
 
 # this block only runs if you execute this file directly (not imported elsewhere)
 
