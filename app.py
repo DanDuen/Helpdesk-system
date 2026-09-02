@@ -80,6 +80,43 @@ def view_ticket(ticket_id):
     db.close()
     return render_template("ticket.html", ticket=ticket)
 
+@app.route("/ticket/<int:ticket_id>/edit", methods=["GET", "POST"])
+def edit_ticket(ticket_id):
+    if request.method == "GET":
+        db = sqlite3.connect("helpdesk.db")
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tickets WHERE id = ?", (ticket_id,))
+        ticket = cursor.fetchone()
+        db.close()
+        return render_template("edit_ticket.html", ticket=ticket)
+    else:
+        # handle the form submission for editing the ticket
+        requester = request.form["requester"]
+        description = request.form["description"]
+        assigned_to = request.form["assigned_to"]
+        priority = request.form["priority"]
+        asset_id = request.form["asset_id"]
+        resolution_notes = request.form["resolution_notes"]
+        already_resolved = request.form.get("already_resolved") == "yes"
+
+        if already_resolved:
+            status = "Fixed"
+            resolved_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        else:
+            status = "Open"
+            resolved_at = None
+
+        conn = sqlite3.connect("helpdesk.db")
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE tickets
+            SET assigned_to = ?, requester = ?, description = ?, priority = ?, resolution_notes = ?, status = ?, asset_id = ?, resolved_at = ?
+            WHERE id = ?
+        """, (assigned_to, requester, description, priority, resolution_notes, status, asset_id, resolved_at, ticket_id))
+        conn.commit()
+        conn.close()
+
+        return redirect(f"/ticket/{ticket_id}")
 # this block only runs if you execute this file directly (not imported elsewhere)
 
 if __name__ == "__main__":

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Edit Ticket</title>
+    </head>
+
+    <body>
+        <h1>Ticket Editor</h1>
+
+
+        <form action="/ticket/{{ ticket[0] }}/edit" method="POST">
+
+
+            <label>Assigned to:</label>
+            <input type="text" name="assigned_to" value="{{ ticket[1] }}">
+            <br>
+
+            <label>Requester:</label>
+            <!-- name="requester" is the key Flask will use to read this field's value -->
+            <input type="text" name="requester" value="{{ ticket [2]}}">
+            <br>
+
+            <label>Description:</label>
+            <input type="text" name="description" value="{{ ticket[3] }}">
+            <br>
+
+            <label>Priority:</label>
+            <select name="priority" >
+                <option value="low" {% if ticket[4] == "low" %}selected{% endif %}>low</option>
+                <option value="medium" {% if ticket[4] == "medium" %}selected{% endif %}>medium</option>
+                <option value="high" {% if ticket[4] == "high" %}selected{% endif %}>high</option>
+            </select>
+            <br>
+
+            <label>
+            <!-- checkboxes need a "value" too — this is what gets sent IF checked -->
+            <input type="checkbox" name="already_resolved" value="yes" {% if ticket[5] == "Fixed" %}checked{% endif %}>
+            Already resolved?
+            </label>
+            <br>
+
+            <label>Asset ID:</label>
+            <input type="text" name="asset_id" value="{{ ticket[6] }}">
+            <br>
+
+            <!-- Read-only fields for timestamps -->
+            <label>Created at::</label>
+            <input type="text" name="created_at" value="{{ ticket[7] }}" readonly>
+            <br>
+
+            <label>Resolved at:</label>
+            <input type="text" name="resolved_at" value="{{ ticket[8] }}" readonly>
+            <br>
+
+            <label>Resolution Notes:</label>
+            <input type="text" name="resolution_notes" value="{{ ticket[9] }}">
+            <br>
+
+            <input type="submit" value="Update Ticket">
+        </form>
+    </body>
+</html>

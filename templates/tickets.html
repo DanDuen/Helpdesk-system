@@ -20,7 +20,7 @@
             </tr>
             {% for ticket in tickets %}
             <tr>
-                <td>{{ ticket[0] }}</td>
+                <td><a href="/ticket/{{ ticket[0] }}">{{ ticket[0] }}</a></td>
                 <td>{{ ticket[1] }}</td>
                 <td>{{ ticket[2] }}</td>
                 <td>{{ ticket[3] }}</td>
