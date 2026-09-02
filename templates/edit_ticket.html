@@ -56,7 +56,14 @@
             <input type="text" name="resolution_notes" value="{{ ticket[9] }}">
             <br>
 
+            <label>Is Deleted:</label>
+            <input type="text" name="is_deleted" value="{{ ticket[10] }}">
+            <br>
+
             <input type="submit" value="Update Ticket">
+        </form>
+        <form action="/ticket/{{ ticket[0] }}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this ticket?');">
+            <button type="submit">Delete Ticket</button>
         </form>
     </body>
 </html>

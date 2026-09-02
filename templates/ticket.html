@@ -16,7 +16,11 @@
         <p><strong>Created at:</strong> {{ ticket[7] }}</p>
         <p><strong>Resolved at:</strong> {{ ticket[8] }}</p>
         <p><strong>Resolution Notes:</strong> {{ ticket[9] }}</p>
+        <p><strong>Is Deleted:</strong> {{ ticket[10] }}</p>
         <p><a href="/ticket/{{ ticket[0] }}/edit">Edit this ticket</a></p>
+        <form action="/ticket/{{ ticket[0] }}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this ticket?');">
+            <button type="submit">Delete Ticket</button>
+        </form>
         <p><a href="/tickets">Back to Tickets List</a></p>
 
     </body>
