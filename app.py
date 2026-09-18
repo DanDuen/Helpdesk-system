@@ -1,7 +1,5 @@
 # import the Flask class from the flask package
 
-#TODO: Make a way to delete tickets 
-
 from flask import Flask, render_template, request, redirect 
 from datetime import datetime
 import sqlite3
@@ -39,12 +37,12 @@ def new_ticket():
         priority = request.form["priority"]
         asset_id = request.form["asset_id"]
         resolution_notes = request.form["resolution_notes"]
-        created_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+        created_at = datetime.now().strftime("%Y-%m-%d %I:%M %p")
         already_resolved = request.form.get("already_resolved") == "yes"
 
         if already_resolved:
             status = "Fixed"
-            resolved_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+            resolved_at = datetime.now().strftime("%Y-%m-%d %I:%M %p")
         else:
             status = "Open"
             resolved_at = None
@@ -70,10 +68,16 @@ def new_ticket():
 def view_ticket(ticket_id):
     db = sqlite3.connect("helpdesk.db")
     cursor = db.cursor()
+#get info from the database for the ticket with the given ID
     cursor.execute("SELECT * FROM tickets WHERE id = ?", (ticket_id,))
     ticket = cursor.fetchone()
+
+#get all of the updates for this ticket from the updates table
+    cursor.execute("SELECT * FROM updates WHERE ticket_id = ?", (ticket_id,))
+    updates = cursor.fetchall()
+
     db.close()
-    return render_template("ticket.html", ticket=ticket)
+    return render_template("ticket.html", ticket=ticket, updates=updates)
 
 @app.route("/ticket/<int:ticket_id>/edit", methods=["GET", "POST"])
 def edit_ticket(ticket_id):
@@ -97,7 +101,7 @@ def edit_ticket(ticket_id):
 
         if already_resolved:
             status = "Fixed"
-            resolved_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+            resolved_at = datetime.now().strftime("%Y-%m-%d %I:%M %p")
         else:
             status = "Open"
             resolved_at = None
@@ -122,6 +126,31 @@ def delete_ticket(ticket_id):
     conn.commit()
     conn.close()
     return redirect("/tickets")
+
+@app.route("/ticket/<int:ticket_id>/update", methods=["POST"])
+def add_update(ticket_id):
+    # get the note text from the form — must match the textarea's name="..."
+    note = request.form["note"]
+
+    # generate a timestamp, same pattern as elsewhere
+    created_at = datetime.now().strftime("%Y-%m-%d %I:%M %p")
+
+    # connect to the database
+    conn = sqlite3.connect("helpdesk.db")
+    cursor = conn.cursor()
+
+    # insert this note as a new row in the updates table
+    cursor.execute("""
+        INSERT INTO updates (ticket_id, note, created_at)
+        VALUES (?, ?, ?)
+    """, (ticket_id, note, created_at))
+
+    # save the change and close the connection
+    conn.commit()
+    conn.close()
+
+    # redirect back to the ticket's own page
+    return redirect(f"/ticket/{ticket_id}")
 
 if __name__ == "__main__":
 

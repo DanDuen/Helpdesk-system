@@ -15,6 +15,17 @@
         <p><strong>Asset ID:</strong> {{ ticket[6] }}</p>
         <p><strong>Created at:</strong> {{ ticket[7] }}</p>
         <p><strong>Resolved at:</strong> {{ ticket[8] }}</p>
+        <!--display the update history for this ticket-->    
+            <h2>Update History</h2>
+                {% for note in updates %}
+                <p>{{ note[3] }} — {{ note[2] }}</p>
+                {% endfor %}
+        <!-- Add an update to the ticket-->
+         <form action="/ticket/{{ ticket[0] }}/update" method="POST">
+            <label>Add an update:</label><br>
+            <textarea name="note"></textarea><br>
+            <input type="submit" value="Add Update">
+        </form>
         <p><strong>Resolution Notes:</strong> {{ ticket[9] }}</p>
         <p><strong>Is Deleted:</strong> {{ ticket[10] }}</p>
         <p><a href="/ticket/{{ ticket[0] }}/edit">Edit this ticket</a></p>
