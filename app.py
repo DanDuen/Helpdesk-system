@@ -1,19 +1,53 @@
 # import the Flask class from the flask package
-
-from flask import Flask, render_template, request, redirect 
+from flask import Flask, render_template, request, redirect
 from datetime import datetime
 import sqlite3
+
 # create an instance of the Flask application
 # __name__ is a special Python variable that tells Flask
 # where to look for things like templates later on
-
 app = Flask(__name__)
+
+# create the database tables if they don't already exist yet
+# this runs once, when the server starts, so a brand-new install
+# (a new computer, a fresh clone of the repo) automatically gets
+# a working, empty database without any manual setup steps
+def init_db():
+    conn = sqlite3.connect("helpdesk.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS tickets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            assigned_to TEXT,
+            requester TEXT,
+            description TEXT,
+            priority TEXT,
+            status TEXT,
+            asset_id TEXT,
+            created_at TEXT,
+            resolved_at TEXT,
+            resolution_notes TEXT,
+            is_deleted INTEGER DEFAULT 0
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS updates (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticket_id INTEGER,
+            note TEXT,
+            created_at TEXT,
+            FOREIGN KEY (ticket_id) REFERENCES tickets (id)
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 # this "decorator" tells Flask: when someone visits the "/" URL (the homepage),
 # run the function defined right below it
-
 @app.route("/")
-
 def home():
     return render_template("home.html")
 
@@ -25,7 +59,7 @@ def list_tickets():
     all_tickets = cursor.fetchall()            # pull the actual rows into a Python list
     db.close()                               # close the connection now that we're done
     #print(all_tickets)                         # temporary: just print to terminal to verify
-    return render_template("tickets.html", tickets=all_tickets)           # temporary placeholder response
+    return render_template("tickets.html", tickets=all_tickets)
 
 @app.route("/new", methods=["GET", "POST"])
 def new_ticket():
@@ -68,11 +102,11 @@ def new_ticket():
 def view_ticket(ticket_id):
     db = sqlite3.connect("helpdesk.db")
     cursor = db.cursor()
-#get info from the database for the ticket with the given ID
+    #get info from the database for the ticket with the given ID
     cursor.execute("SELECT * FROM tickets WHERE id = ?", (ticket_id,))
     ticket = cursor.fetchone()
 
-#get all of the updates for this ticket from the updates table
+    #get all of the updates for this ticket from the updates table
     cursor.execute("SELECT * FROM updates WHERE ticket_id = ?", (ticket_id,))
     updates = cursor.fetchall()
 
@@ -152,8 +186,7 @@ def add_update(ticket_id):
     # redirect back to the ticket's own page
     return redirect(f"/ticket/{ticket_id}")
 
+#TODO: turn off debug mode when deploying to production
 if __name__ == "__main__":
-
-    # start the built-in development server
-
-    app.run()
+    init_db()  # Initialize the database before starting the app
+    app.run(debug=True)  # Start the Flask development server with debug mode enabled

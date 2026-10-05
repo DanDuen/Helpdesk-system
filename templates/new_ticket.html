@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <title>New Ticket</title>
     </head>
 
     <body>
+        <!-- navigation bar: lets you get around without typing URLs -->
+        <nav class="navbar">
+            <a href="/">Home</a>
+            <a href="/tickets">All Tickets</a>
+            <a href="/new">New Ticket</a>
+        </nav>
         <h1>New Ticket</h1>
 
         <!-- action="/new" means: send this form's data back to the /new route -->
         <!-- method="POST" means: this is a "submit data" request, not just "view a page" -->
-        <form action="/new" method="POST">
+        <form class="ticket-form" action="/new" method="POST">
 
             <label>Requester:</label>
             <!-- name="requester" is the key Flask will use to read this field's value -->

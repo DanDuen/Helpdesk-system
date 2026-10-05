@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <title>Edit Ticket</title>
     </head>
 
     <body>
+        <!-- navigation bar: lets you get around without typing URLs -->
+        <nav class="navbar">
+            <a href="/">Home</a>
+            <a href="/tickets">All Tickets</a>
+            <a href="/new">New Ticket</a>
+        </nav>
         <h1>Ticket Editor</h1>
 
 
-        <form action="/ticket/{{ ticket[0] }}/edit" method="POST">
+        <form class="ticket-form" action="/ticket/{{ ticket[0] }}/edit" method="POST">
 
 
             <label>Assigned to:</label>

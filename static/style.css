@@ -1,0 +1,228 @@
+/* ---------- Page basics ---------- */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f3f5f9;
+    color: #222;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    margin-top: 0;
+    color: #1f3a5f;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Top navigation bar ---------- */
+.navbar {
+    max-width: 1300px;
+    margin: 0 auto 14px auto;
+    display: flex;
+    gap: 18px;
+}
+.navbar a {
+    font-weight: 600;
+}
+
+/* ---------- Two-column ticket page layout ---------- */
+.page-layout {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.left-column {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ---------- Shared "card" look ---------- */
+.ticket-info,
+.ticket-actions,
+.update-history {
+    background: white;
+    border: 1px solid #dde3ec;
+    border-radius: 8px;
+    padding: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- Top-left: ticket details grid ---------- */
+.ticket-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px 16px;
+}
+
+.ticket-info h1 {
+    grid-column: span 3;
+    border-bottom: 2px solid #e5eaf2;
+    padding-bottom: 6px;
+    font-size: 1.5rem;
+}
+
+.ticket-info p {
+    margin: 0;
+}
+
+.ticket-info strong {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7a90;
+}
+
+.full-width {
+    grid-column: span 3;
+}
+
+/* ---------- Bottom-left: actions ---------- */
+.ticket-actions textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 80px;
+    padding: 8px;
+    border: 1px solid #c5cedb;
+    border-radius: 6px;
+    font-family: inherit;
+    margin: 6px 0;
+}
+.ticket-actions p {
+    margin: 8px 0 0 0;
+}
+.ticket-actions form {
+    margin: 0;
+}
+.ticket-actions br {
+    display: none;
+}
+
+/* ---------- Buttons ---------- */
+button,
+input[type="submit"] {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+button:hover,
+input[type="submit"]:hover {
+    background: #1d4ed8;
+}
+
+/* delete buttons are red so they stand out as dangerous */
+form[action$="/delete"] button {
+    background: #dc2626;
+}
+form[action$="/delete"] button:hover {
+    background: #b91c1c;
+}
+
+/* ---------- Right column: update history ---------- */
+.update-history {
+    flex: 0.5;
+}
+.update-history p {
+    padding: 5px 0;
+    margin: 0;
+    border-bottom: 1px solid #eef1f6;
+}
+
+/* ---------- Tickets list table (tickets.html) ---------- */
+table {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #dde3ec;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+th {
+    background: #1f3a5f;
+    color: white;
+    text-align: left;
+    padding: 10px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eef1f6;
+    vertical-align: top;
+}
+tr:hover td {
+    background: #f6f9ff;
+}
+td button {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+}
+td form {
+    margin: 0;
+}
+
+/* ---------- New / Edit ticket forms ---------- */
+.ticket-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #dde3ec;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ticket-form br {
+    display: none;
+}
+.ticket-form label {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7a90;
+}
+.ticket-form input[type="text"],
+.ticket-form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #c5cedb;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+.ticket-form label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: none;
+    font-size: 0.95rem;
+    color: #222;
+}
+.ticket-form input[type="submit"] {
+    margin-top: 18px;
+}
+.ticket-form input[readonly] {
+    background: #f0f2f6;
+    color: #6b7a90;
+}
