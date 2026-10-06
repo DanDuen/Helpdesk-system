@@ -45,6 +45,11 @@ def init_db():
     conn.commit()
     conn.close()
 
+# run the database setup every time this file is loaded, whether it was
+# started with "python app.py" or "flask run" (safe to repeat, because
+# CREATE TABLE IF NOT EXISTS skips tables that already exist)
+init_db()
+
 # this "decorator" tells Flask: when someone visits the "/" URL (the homepage),
 # run the function defined right below it
 @app.route("/")
@@ -188,5 +193,4 @@ def add_update(ticket_id):
 
 #TODO: turn off debug mode when deploying to production
 if __name__ == "__main__":
-    init_db()  # Initialize the database before starting the app
     app.run(debug=True)  # Start the Flask development server with debug mode enabled
